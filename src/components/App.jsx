@@ -1,13 +1,18 @@
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContact, deleteContact } from '../redux/contactsSlice';
-import { changeFilter  } from "../redux/filtersSlice";
-import ContactForm from "./ContactForm/ContactForm";
-import ContactList from "./ContactList/ContactList";
-import SearchBox from "./SearchBox/SearchBox";
+// import { addContact, deleteContact, fetchContacts } from '../redux/contactsSlice';
+import { fetchContacts } from '../redux/api';
+import { changeFilter } from '../redux/filtersSlice';
+import ContactForm from './ContactForm/ContactForm';
+import ContactList from './ContactList/ContactList';
+import SearchBox from './SearchBox/SearchBox';
 
 const App = () => {
-
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchContacts());
+    }, [dispatch]);
 
     const handleAddContact = (contact) => {
         dispatch(addContact(contact));
