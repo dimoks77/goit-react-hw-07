@@ -1,7 +1,7 @@
 .search {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 350px;
   padding: 12px 20px 25px 20px;
   font-size: 16px;
   border: 1px solid #ccc;

@@ -1,37 +1,26 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-// import { addContact, deleteContact, fetchContacts } from '../redux/contactsSlice';
-import { fetchContacts } from '../redux/api';
-import { changeFilter } from '../redux/filtersSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchContacts } from '../redux/contactsOps';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import SearchBox from './SearchBox/SearchBox';
 
 const App = () => {
     const dispatch = useDispatch();
-
+    const { loading, error } = useSelector(state => state.contacts)
+    
     useEffect(() => {
         dispatch(fetchContacts());
     }, [dispatch]);
-
-    const handleAddContact = (contact) => {
-        dispatch(addContact(contact));
-    };
-
-    const handleDeleteContact = (id) => {
-        dispatch(deleteContact(id));
-    };
-
-    const handleSearchChange = (value) => {
-        dispatch(changeFilter(value));
-    };
-       
+      
     return (
         <>
+            {loading && <p>Loading...</p> }
+            {error && <p>Error!</p> }
             <h1>PhoneBook</h1>
-            <ContactForm onAdd={handleAddContact} />
-            <SearchBox onChange={handleSearchChange} />
-            <ContactList onDelete={handleDeleteContact} />
+            <ContactForm />
+            <SearchBox />
+            <ContactList />
         </>
     );
 };

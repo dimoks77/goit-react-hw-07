@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchContacts, addContact, deleteContact } from './api';
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchContacts, addContact, deleteContact } from './contactsOps';
 
 const initialState = {
   items: [],
@@ -18,9 +18,37 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = false;
         state.items = action.payload;
       })
       .addCase(fetchContacts.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(addContact.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        // state.items = [...state.items, action.payload]; // добавляем в конец
+        state.items = [action.payload, ...state.items]; // добавляем в начало
+      })
+      .addCase(addContact.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(deleteContact.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        state.items = state.items.filter(item => item.id !== action.payload);
+      })
+      .addCase(deleteContact.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
